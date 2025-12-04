@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひだまりこどもファミリークリニック</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Material Symbols Rounded -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        /* --- 変数定義 (Color Palette) --- */
+        :root {
+            /* Main Colors */
+            --primary: #FF9F43;
+            --primary-bg: #FFF5E6;
+            --secondary: #FDCB6E;
+            --accent-pop: #FF6B6B;
+            
+            /* Base Colors */
+            --bg-body: #F2F4F8;
+            --bg-main: #FFFDF7;
+            
+            /* Text Colors */
+            --text-main: #2D3436;
+            --text-light: #636E72;
+            
+            /* Layout Sizes */
+            --main-width: 375px;  /* 一般的なスマホ幅 */
+            --main-height: 680px; /* スマホ表示時の高さ */
+            --sidebar-width: 360px; /* サイドバーの幅を拡張 */
+            
+            /* Radius & Shadow */
+            --radius-card: 20px;
+            --radius-btn: 50px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-float: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* --- Reset & Base --- */
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background-color: hsla(13,0%,100%,1);
+            background-image:
+                radial-gradient(at 11% 75%, hsla(21,100%,92%,1) 0px, transparent 50%),
+                radial-gradient(at 15% 16%, hsla(60,100%,84%,1) 0px, transparent 50%),
+                radial-gradient(at 79% 79%, hsla(59,100%,92%,1) 0px, transparent 50%),
+                radial-gradient(at 52% 49%, hsla(28,100%,74%,1) 0px, transparent 50%),
+                radial-gradient(at 86% 27%, hsla(58,88%,88%,1) 0px, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden; /* PC画面全体のスクロールを禁止 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        img { max-width: 100%; height: auto; }
+        p { margin: 0 0 1em 0; }
+
+        /* --- Layout Grid --- */
+        .app-layout {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* 垂直方向中央揃え */
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            padding: 20px;
+        }
+
+        /* === スマホ型メインカラム (デフォルト: スマホ外観) === */
+        .main-column {
+            width: var(--main-width);
+            height: var(--main-height);
+            background-color: var(--bg-main);
+            border-radius: 40px; /* スマホっぽい丸み */
+            box-shadow: var(--shadow-float), 0 0 0 8px rgba(255,255,255,0.8); /* 外枠 */
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        /* 内部スクロールエリア */
+        .scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 80px; /* Bottom nav space */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; }
+
+        /* === Sidebars (PC Only) === */
+        .sidebar {
+            width: var(--sidebar-width);
+            display: none; /* Mobile default hidden */
+            flex-direction: column;
+            gap: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .sidebar::-webkit-scrollbar { display: none; }
+
+        /* --- Components --- */
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            gap: 8px;
+            border: none;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); background: #FFA552; }
+        .btn-accent { background: var(--accent-pop); color: white; box-shadow: 0 4px 12px rgba(255,107,107,0.3); }
+        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,107,107,0.4); }
+        .btn-outline { background: white; border: 2px solid var(--primary); color: var(--primary); }
+
+        .card {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .mobile-logo {
+            font-size: 1.0rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Nav Menu (Left Sidebar) */
+        .nav-menu {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            border-radius: var(--radius-card);
+            padding: 16px;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+        .nav-item:hover { background: var(--primary-bg); color: var(--primary); }
+        .nav-item.active { color: var(--primary); }
+
+        /* Sidebar Widgets */
+        .widget {
+            background: rgba(255,255,255,0.9);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+        }
+        .widget-title {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+        
+        .map-placeholder {
+            background: #EEE;
+            height: 120px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #AAA;
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        /* --- Main Content Sections --- */
+        .hero {
+            padding: 30px 20px 10px; /* 下部のパディングを調整 */
+            text-align: center;
+            background: linear-gradient(180deg, #FFF5E6 0%, #FFFDF7 100%);
+        }
+        .hero h1 { font-size: 1.6rem; line-height: 1.4; margin-bottom: 12px; }
+        
+        /* 画像の境目をぼかすスタイル */
+        .fade-edge-img {
+            width: 100%;
+            height: 200px; /* 高さは適宜調整 */
+            object-fit: cover;
+            border-radius: 24px;
+            margin: 20px 0;
+            /* 上下の境目をぼかす */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        
+        /* FV用の画像調整 */
+        .hero-img-custom {
+            height: 220px; /* FV用は少し高さを出す */
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin: 32px 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 20px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+
+        .content-padding { padding: 0 20px; }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 8px 2px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .schedule-table th { color: var(--primary); }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px;
+            z-index: 100;
+        }
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.65rem;
+            color: var(--text-light);
+            gap: 4px;
+            flex: 1;
+            cursor: pointer;
+        }
+        .bottom-nav-item span { font-size: 24px; }
+        .bottom-nav-item.active { color: var(--primary); }
+
+        /* FAB */
+        .fab-mobile {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--accent-pop);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+            z-index: 99;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .fab-mobile:hover { transform: scale(1.05); }
+
+        /* --- Responsive Queries (PC表示) --- */
+        @media (min-width: 1024px) {
+            .sidebar { display: flex; }
+            .sidebar-logo {
+                font-size: 1.4rem;
+                font-weight: 900;
+                color: var(--text-main);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 16px;
+                margin-bottom: 10px;
+            }
+
+            /* PC版: 中央カラムのスタイル変更 */
+            .main-column {
+                border-radius: 0; /* 角丸なし */
+                box-shadow: 0 0 15px rgba(0,0,0,0.03); /* 影を薄くしてフラットに近づける */
+                height: 100vh; /* 画面高さ */
+                border: none; /* 枠線なし */
+            }
+
+            /* PC版: モバイル用の追従要素と、PCサイドバーと重複するコンテンツを非表示 */
+            .mobile-header, .bottom-nav, .fab-mobile, .mobile-only-content {
+                display: none !important;
+            }
+
+            /* スクロールエリアの余白調整（ナビがなくなる分） */
+            .scroll-container {
+                padding-bottom: 20px;
+            }
+        }
+
+        /* スマホ実機で見る場合（画面幅が狭い場合）の調整 */
+        @media (max-width: 600px) {
+            body {
+                background: var(--bg-body);
+                height: auto;
+                overflow: auto;
+                display: block;
+            }
+            .app-layout {
+                display: block;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+            .sidebar { display: none !important; }
+            .main-column {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+            }
+            .scroll-container {
+                padding-bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- === LEFT SIDEBAR (PC Navigation) === -->
+    <aside class="sidebar sidebar-left">
+        <a href="#" class="sidebar-logo">
+            <span class="material-symbols-rounded" style="color:var(--primary); font-size:32px;">sunny</span>
+            ひだまりこども<br>クリニック
+        </a>
+        
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active">
+                <span class="material-symbols-rounded icon">home</span>
+                ホーム
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-symbols-rounded icon">child_care</span>
+                初めての方へ
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-symbols-rounded icon">medical_services</span>
+                診療案内
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-symbols-rounded icon">vaccines</span>
+                予防接種
+            </a>
+            <a href="#" class="nav-item">
+                <span class="material-symbols-rounded icon">map</span>
+                アクセス
+            </a>
+        </nav>
+
+        <!-- Primary CTA (Modified Style) -->
+        <div class="widget" style="text-align:center; margin-top: auto;">
+            <h3 style="margin-bottom:8px; color:var(--text-main);">WEB予約</h3>
+            <p style="font-size:0.85rem; margin-bottom:16px; color:var(--text-light);">24時間いつでも受付中</p>
+            <button class="btn btn-accent">
+                <span class="material-symbols-rounded">touch_app</span>
+                今すぐ予約する
+            </button>
+        </div>
+    </aside>
+
+    <!-- === MAIN COLUMN === -->
+    <main class="main-column">
+        
+        <!-- コンテンツスクロールエリア -->
+        <div class="scroll-container">
+            <!-- Mobile Header (PC Hidden) -->
+            <header class="mobile-header">
+                <div class="mobile-logo">
+                    <span class="material-symbols-rounded" style="color:var(--primary);">sunny</span>
+                    ひだまりこどもクリニック
+                </div>
+                <span class="material-symbols-rounded" style="color:var(--text-main);">notifications</span>
+            </header>
+
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>家族みんなの<br>「笑顔」を守る<br>やさしい場所。</h1>
+                <p style="font-size: 0.85rem; color: var(--text-light);">お子様からご年配の方まで、<br>安心して通える地域のかかりつけ医です。</p>
+                
+                <!-- FV画像に変更 (ぼかし適用) -->
+                <img src="clinic_talk.jpg" alt="安心のクリニックイメージ" class="fade-edge-img hero-img-custom">
+            </section>
+
+            <!-- Features -->
+            <h2 class="section-title">当院の特徴</h2>
+            <div class="content-padding">
+                <div class="card">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                        <span class="material-symbols-rounded" style="color:var(--primary); background:var(--primary-bg); padding:6px; border-radius:50%;">toys</span>
+                        <h3>怖がらない工夫</h3>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-light);">待合室には絵本やおもちゃをご用意。病院特有の緊張感を和らげます。</p>
+                </div>
+
+                <div class="card">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                        <span class="material-symbols-rounded" style="color:var(--primary); background:var(--primary-bg); padding:6px; border-radius:50%;">sentiment_satisfied_alt</span>
+                        <h3>わかりやすい説明</h3>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-light);">専門用語を使わず、丁寧にご説明します。何でもご相談ください。</p>
+                </div>
+            </div>
+
+            <!-- News -->
+            <h2 class="section-title">お知らせ</h2>
+            <div class="content-padding">
+                <div class="card" style="padding: 16px;">
+                    <div style="font-size:0.75rem; color:var(--text-light); margin-bottom:4px;">2023.10.15</div>
+                    <div style="font-weight:700; font-size:0.95rem;">インフルエンザ予防接種の予約開始について</div>
+                </div>
+                <div class="card" style="padding: 16px;">
+                    <div style="font-size:0.75rem; color:var(--text-light); margin-bottom:4px;">2023.10.01</div>
+                    <div style="font-weight:700; font-size:0.95rem;">11月の休診日のお知らせ</div>
+                </div>
+            </div>
+
+            <!-- Clinic Policy Section (New) -->
+            <h2 class="section-title">当院のこだわり</h2>
+            <div class="content-padding">
+                <img src="clinic_seat.jpg" alt="クリニックの待合室" class="fade-edge-img">
+                <div class="card">
+                    <h3 style="margin-bottom:12px; font-size:1.1rem;">リラックスできる空間づくり</h3>
+                    <p style="font-size:0.9rem; color:var(--text-light);">
+                        太陽の光が差し込む明るい待合室で、リラックスしてお待ちいただけます。座り心地の良いソファや、お子様が退屈しないための絵本コーナーもご用意。病院特有の緊張感を少しでも和らげられるよう、温かみのある空間づくりを心がけています。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Doctor Introduction Section (New) -->
+            <h2 class="section-title">医師紹介</h2>
+            <div class="content-padding">
+                <img src="clinic_talk.jpg" alt="医師によるカウンセリングの様子" class="fade-edge-img">
+                <div class="card">
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                        <span class="material-symbols-rounded" style="font-size:40px; color:var(--primary);">face_3</span>
+                        <div>
+                            <div style="font-size:0.8rem; color:var(--text-light);">院長 / 小児科専門医</div>
+                            <h3 style="font-size:1.2rem;">日向 あかり</h3>
+                        </div>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-light);">
+                        私自身も二児の母です。子育ての不安や悩み、どんな小さなことでもお気軽にご相談ください。お子様の健やかな成長を、ご家族と一緒に見守らせていただきます。分かりやすい言葉で、丁寧な説明を心がけています。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mobile Only Content: Schedule & Access (PCではサイドバーにあるため非表示) -->
+            <div class="mobile-only-content">
+                <!-- Schedule -->
+                <h2 class="section-title">診療状況</h2>
+                <div class="content-padding">
+                    <div class="card">
+                        <div style="text-align:center; padding:8px; background:var(--primary-bg); border-radius:8px; color:var(--primary); font-weight:bold; margin-bottom:12px; font-size:0.9rem;">
+                            現在、通常通り診療中
+                        </div>
+                        <table class="schedule-table">
+                            <tr><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr>
+                            <tr><td>●</td><td>●</td><td>●</td><td>／</td><td>●</td><td>●</td></tr>
+                        </table>
+                        <div style="font-size:0.75rem; text-align:right; margin-top:8px; color:var(--text-light);">木・日・祝は休診</div>
+                    </div>
+                </div>
+
+                <!-- Access -->
+                <h2 class="section-title">アクセス</h2>
+                <div class="content-padding">
+                    <div class="card">
+                        <div class="map-placeholder">Google Map</div>
+                        <p style="font-size:0.85rem; margin-bottom:4px;"><strong>〇〇駅 東口 徒歩3分</strong></p>
+                        <button class="btn btn-outline" style="margin-top:12px; padding: 8px; font-size:0.85rem;">
+                            ルート案内
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer in Main Column -->
+            <footer style="background:#FFFBF2; padding:30px 20px; text-align:center; margin-top:30px; border-top:4px solid var(--secondary);">
+                <div style="font-weight:900; margin-bottom:10px;">ひだまりこども<br>ファミリークリニック</div>
+                <p style="font-size:0.75rem; color:var(--text-light);">&copy; 2023 Hidamari Family Clinic.</p>
+            </footer>
+        </div>
+        <!-- /scroll-container -->
+
+        <!-- Mobile FAB (PC Hidden) -->
+        <a href="#" class="fab-mobile">
+            <span class="material-symbols-rounded" style="font-size:28px;">calendar_add_on</span>
+        </a>
+
+        <!-- Mobile Bottom Nav (PC Hidden) -->
+        <nav class="bottom-nav">
+            <a href="#" class="bottom-nav-item active">
+                <span class="material-symbols-rounded">home</span>
+                ホーム
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <span class="material-symbols-rounded">medical_services</span>
+                診療案内
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <span class="material-symbols-rounded">vaccines</span>
+                予防接種
+            </a>
+            <a href="#" class="bottom-nav-item">
+                <span class="material-symbols-rounded">map</span>
+                アクセス
+            </a>
+        </nav>
+
+    </main>
+
+    <!-- === RIGHT SIDEBAR (PC Info) === -->
+    <aside class="sidebar sidebar-right">
+        
+        <!-- Schedule Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span class="material-symbols-rounded">schedule</span>
+                本日の診療状況
+            </div>
+            <div style="text-align:center; padding:8px; background:var(--primary-bg); border-radius:8px; color:var(--primary); font-weight:bold; margin-bottom:12px; font-size:0.9rem;">
+                現在、通常通り診療中
+            </div>
+            <table class="schedule-table">
+                <tr><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr>
+                <tr><td>●</td><td>●</td><td>●</td><td>／</td><td>●</td><td>●</td></tr>
+            </table>
+            <div style="font-size:0.75rem; text-align:right; margin-top:8px; color:var(--text-light);">木・日・祝は休診</div>
+        </div>
+
+        <!-- Access Widget -->
+        <div class="widget">
+            <div class="widget-title">
+                <span class="material-symbols-rounded">location_on</span>
+                アクセス
+            </div>
+            <div class="map-placeholder">Google Map</div>
+            <p style="font-size:0.85rem; margin-bottom:4px;"><strong>〇〇駅 東口 徒歩3分</strong></p>
+            <button class="btn btn-outline" style="margin-top:12px; padding: 8px; font-size:0.85rem;">
+                ルート案内
+            </button>
+        </div>
+
+    </aside>
+
+</div>
+
+</body>
+</html>
