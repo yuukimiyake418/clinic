@@ -1,10 +1,10 @@
 /* --- 変数定義 (Color Palette) --- */
-:root { 
+:root {
     /* Main Colors */
     --primary: #FF9F43;
     --primary-bg: #FFF5E6;
     --secondary: #FDCB6E;
-    --accent-pop: #FF6B6B;
+    --accent-pop: #ff9101;
     
     /* Base Colors */
     --bg-body: #F2F4F8;
@@ -203,7 +203,7 @@ p { margin: 0 0 1em 0; }
 
 .map-placeholder {
     background: #EEE;
-    height: 120px;
+    height: 150px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -213,6 +213,14 @@ p { margin: 0 0 1em 0; }
     margin-bottom: 12px;
 }
 
+.clinic-map {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    border: 0;
+    display: block;
+    margin-bottom: 12px;
+}
 /* --- Main Content Sections --- */
 .hero {
     padding: 30px 20px 0; /* 下部パディングを0にして画像をつなげる */
@@ -221,6 +229,20 @@ p { margin: 0 0 1em 0; }
     overflow: hidden; /* 画像のはみ出しを隠す（下部など） */
 }
 .hero h1 { font-size: 1.6rem; line-height: 1.4; margin-bottom: 12px; }
+
+.highlight-text::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: -5%;
+    width: 110%;
+    height: 12px; /* 太めの線 */
+    background-color: #ffeaa7; /* 優しい黄色 */
+    opacity: 0.7;
+    z-index: -1;
+    border-radius: 8px;
+    transform: rotate(-1deg); /* 少し手書き風に傾ける */
+}
 
 /* 通常のフェード画像 */
 .fade-edge-img {
@@ -237,10 +259,8 @@ p { margin: 0 0 1em 0; }
 .hero-img-custom {
     /* 親要素(.hero)のpadding 20pxをネガティブマージンで相殺して全幅にする */
     width: calc(100% + 40px);
-    margin-left: -20px;
-    margin-right: -20px;
     
-    height: 300px; /* 少し大きく */
+    height: 420px; /* 少し大きく */
     object-fit: cover;
     margin-top: 20px;
     margin-bottom: -10px; /* 下の要素との距離調整 */
@@ -254,7 +274,7 @@ p { margin: 0 0 1em 0; }
 
 .section-title {
     font-size: 1.2rem;
-    margin: 32px 20px 16px;
+    margin: 32px 30px 16px;
     display: flex;
     align-items: center;
     gap: 8px;
