@@ -1,0 +1,389 @@
+/* --- 変数定義 (Color Palette) --- */
+:root { 
+    /* Main Colors */
+    --primary: #FF9F43;
+    --primary-bg: #FFF5E6;
+    --secondary: #FDCB6E;
+    --accent-pop: #FF6B6B;
+    
+    /* Base Colors */
+    --bg-body: #F2F4F8;
+    --bg-main: #FFFDF7;
+    
+    /* Text Colors */
+    --text-main: #2D3436;
+    --text-light: #636E72;
+    
+    /* Layout Sizes */
+    --main-width: 450px;  /* スマホビューの幅を450pxに拡張 */
+    --main-height: 720px; /* 幅に合わせて高さも少しバランス調整 */
+    --sidebar-width: 360px;
+    
+    /* Radius & Shadow */
+    --radius-card: 20px;
+    --radius-btn: 50px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-float: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* --- Reset & Base --- */
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background-color: hsla(13,0%,100%,1);
+    background-image:
+        radial-gradient(at 11% 75%, hsla(21,100%,92%,1) 0px, transparent 50%),
+        radial-gradient(at 15% 16%, hsla(60,100%,84%,1) 0px, transparent 50%),
+        radial-gradient(at 79% 79%, hsla(59,100%,92%,1) 0px, transparent 50%),
+        radial-gradient(at 52% 49%, hsla(28,100%,74%,1) 0px, transparent 50%),
+        radial-gradient(at 86% 27%, hsla(58,88%,88%,1) 0px, transparent 50%);
+    background-attachment: fixed;
+    background-size: cover;
+    
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    height: 100vh;
+    overflow: hidden; /* PC画面全体のスクロールを禁止 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: 700; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+img { max-width: 100%; height: auto; }
+p { margin: 0 0 1em 0; }
+
+/* --- Layout Grid --- */
+.app-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 垂直方向中央揃え */
+    gap: 40px;
+    width: 100%;
+    max-width: 1300px;
+    height: 100%;
+    padding: 20px;
+}
+
+/* === スマホ型メインカラム === */
+.main-column {
+    width: var(--main-width);
+    height: var(--main-height);
+    background-color: var(--bg-main);
+    border-radius: 40px;
+    box-shadow: var(--shadow-float), 0 0 0 8px rgba(255,255,255,0.8);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* 内部スクロールエリア */
+.scroll-container {
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 80px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+.scroll-container::-webkit-scrollbar { display: none; }
+
+/* === Sidebars (PC Only) === */
+.sidebar {
+    width: var(--sidebar-width);
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* --- Components --- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: var(--radius-btn);
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    gap: 8px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+}
+.btn-primary { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); background: #FFA552; }
+.btn-accent { background: var(--accent-pop); color: white; box-shadow: 0 4px 12px rgba(255,107,107,0.3); }
+.btn-accent:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,107,107,0.4); }
+.btn-outline { background: white; border: 2px solid var(--primary); color: var(--primary); }
+
+.card {
+    background: white;
+    border-radius: var(--radius-card);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+}
+
+/* Mobile Header */
+.mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.mobile-logo {
+    font-size: 1.0rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Nav Menu (Left Sidebar) */
+.nav-menu {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(5px);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    width: 100%;
+    box-shadow: var(--shadow-sm);
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background 0.2s;
+}
+.nav-item:hover { background: var(--primary-bg); color: var(--primary); }
+.nav-item.active { color: var(--primary); }
+
+/* Sidebar Widgets */
+.widget {
+    background: rgba(255,255,255,0.9);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    width: 100%;
+    box-shadow: var(--shadow-sm);
+}
+.widget-title {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+}
+
+.map-placeholder {
+    background: #EEE;
+    height: 120px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #AAA;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+/* --- Main Content Sections --- */
+.hero {
+    padding: 30px 20px 0; /* 下部パディングを0にして画像をつなげる */
+    text-align: center;
+    background: linear-gradient(180deg, #FFF5E6 0%, #FFFDF7 100%);
+    overflow: hidden; /* 画像のはみ出しを隠す（下部など） */
+}
+.hero h1 { font-size: 1.6rem; line-height: 1.4; margin-bottom: 12px; }
+
+/* 通常のフェード画像 */
+.fade-edge-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 24px;
+    margin: 20px 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+/* FV用の画像調整（幅100% & 上部フェードアウト） */
+.hero-img-custom {
+    /* 親要素(.hero)のpadding 20pxをネガティブマージンで相殺して全幅にする */
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+    
+    height: 300px; /* 少し大きく */
+    object-fit: cover;
+    margin-top: 20px;
+    margin-bottom: -10px; /* 下の要素との距離調整 */
+    
+    /* 上に向かって透明にするマスク (上が透明、下が不透明) */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    
+    border-radius: 0; /* 幅いっぱいにするため角丸なし */
+}
+
+.section-title {
+    font-size: 1.2rem;
+    margin: 32px 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-title::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 20px;
+    background: var(--secondary);
+    border-radius: 3px;
+}
+
+.content-padding { padding: 0 20px; }
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.schedule-table th, .schedule-table td {
+    padding: 8px 2px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+.schedule-table th { color: var(--primary); }
+
+/* Bottom Nav */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 20px;
+    z-index: 100;
+}
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--text-light);
+    gap: 4px;
+    flex: 1;
+    cursor: pointer;
+}
+.bottom-nav-item span { font-size: 24px; }
+.bottom-nav-item.active { color: var(--primary); }
+
+/* FAB */
+.fab-mobile {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: var(--accent-pop);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255,107,107,0.4);
+    z-index: 99;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+.fab-mobile:hover { transform: scale(1.05); }
+
+/* --- Responsive Queries (PC表示) --- */
+@media (min-width: 1024px) {
+    .sidebar { display: flex; }
+    .sidebar-logo {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        margin-bottom: 10px;
+    }
+
+    /* PC版: 中央カラムのスタイル変更 */
+    .main-column {
+        border-radius: 0;
+        box-shadow: 0 0 15px rgba(0,0,0,0.03);
+        height: 100vh;
+        border: none;
+    }
+
+    /* PC版: モバイル用の追従要素と、PCサイドバーと重複するコンテンツを非表示 */
+    .mobile-header, .bottom-nav, .fab-mobile, .mobile-only-content {
+        display: none !important;
+    }
+
+    /* スクロールエリアの余白調整 */
+    .scroll-container {
+        padding-bottom: 20px;
+    }
+}
+
+/* スマホ実機で見る場合 */
+@media (max-width: 600px) {
+    body {
+        background: var(--bg-body);
+        height: auto;
+        overflow: auto;
+        display: block;
+    }
+    .app-layout {
+        display: block;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+    .sidebar { display: none !important; }
+    .main-column {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+    }
+    .scroll-container {
+        padding-bottom: 80px;
+    }
+}
